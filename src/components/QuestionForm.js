@@ -2,19 +2,32 @@
 import React, { useState } from 'react';
 
 function QuestionForm({ onAddQuestion }) {
-  const [question, setQuestion] = useState({
+  const [formData, setFormData] = useState({
     prompt: '',
     answers: [],
     correctIndex: 0,
   });
 
-  // Implement form input handling and submission logic here
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    // Perform validation on formData if needed
 
-  return (
-    <div>
-      {/* Your question form content goes here */}
-    </div>
-  );
+    // Send POST request to API
+    fetch('http://localhost:4000/questions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+    })
+      .then((response) => response.json())
+      .then((newQuestion) => {
+        // Update state in the parent component
+        onAddQuestion(newQuestion);
+      });
+  };
+
+  // ... rest of your form code
 }
 
 export default QuestionForm;
